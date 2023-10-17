@@ -2,6 +2,8 @@ import express from "express";
 import products from "./data/products.js";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import productRoutes from "./routes/productRoutes.js";
+import { notFound, errorHandler } from "./middleware/errorHandler.js";
 dotenv.config();
 
 connectDB();
@@ -13,13 +15,8 @@ app.get("/", (req, res) => {
   res.send("Server Index");
 });
 
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
-
-app.get("/api/products/:id", (req, res) => {
-  const product = products.find((item) => item._id === req.params.id);
-  res.json(product);
-});
+app.use("/api/products", productRoutes);
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`listening on port ${port}`));
