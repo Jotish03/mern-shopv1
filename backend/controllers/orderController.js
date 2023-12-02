@@ -6,7 +6,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     orderItems,
     shippingAddress,
     paymentMethod,
-    itemsPrice,
+    itemPrice,
     taxPrice,
     shippingPrice,
     totalPrice,
@@ -25,7 +25,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
       user: req.user._id,
       shippingAddress,
       paymentMethod,
-      itemsPrice,
+      itemPrice,
       taxPrice,
       shippingPrice,
       totalPrice,
@@ -41,7 +41,11 @@ const getMyOrders = asyncHandler(async (req, res) => {
 });
 
 const getOrderById = asyncHandler(async (req, res) => {
-  const order = await Order.find(req.params.id).populate("user", "name email");
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
+
   if (order) {
     res.status(200).json(order);
   } else {
